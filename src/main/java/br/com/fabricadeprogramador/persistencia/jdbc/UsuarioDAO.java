@@ -2,7 +2,10 @@ package br.com.fabricadeprogramador.persistencia.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.fabricadeprogramador.persistencia.entidade.Usuario;
 
@@ -57,6 +60,70 @@ public class UsuarioDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
+	public void salvar(Usuario usuario) {
+		if(usuario.getId()>0) {
+			alterar(usuario);
+		}
+		else {
+			cadastrar(usuario);
+		}
+	}
+	/*
+	 * Buscar de um registro de banco de dados pelo id do usuario
+	 * @param é um inteiro que identifica o usuario a ser buscado
+	 * @return retorna o usuario buscado ou nulo caso não seja encontrado
+	 * 
+	 * */
+	
+	public Usuario buscarPorId(Integer id) {
+		String sql = "Select * from usuario where id=?";
+		
+		try (PreparedStatement preparador = con.prepareStatement(sql)){
+			preparador.setInt(1, id);
+			
+			ResultSet resultado = preparador.executeQuery();//o executeQuery() retorna um resultSet
+			if(resultado.next()==true) {
+				Usuario usuario = new Usuario();
+				usuario.setId(resultado.getInt("id"));
+				usuario.setNome(resultado.getString("nome"));
+				usuario.setLogin(resultado.getString("login"));
+				usuario.setSenha(resultado.getString("senha"));
+			
+				return usuario;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	/*Realiza a busca de todos registro da tabela de usuários
+	 * 
+	 * @return retorna uma lista com os usuarios ou vazia
+	 * */
+	
+	public List<Usuario>  buscarTodos() {
+		String sql = "Select * from usuario";
+		List<Usuario> lista = new ArrayList<Usuario>();
+		try (PreparedStatement preparador = con.prepareStatement(sql)){
+			
+			ResultSet resultado = preparador.executeQuery();//o executeQuery() retorna um resultSet
+			while(resultado.next()==true) {
+				Usuario usuario = new Usuario();
+				usuario.setId(resultado.getInt("id"));
+				usuario.setNome(resultado.getString("nome"));
+				usuario.setLogin(resultado.getString("login"));
+				usuario.setSenha(resultado.getString("senha"));
+			
+				lista.add(usuario);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
+	
 }
