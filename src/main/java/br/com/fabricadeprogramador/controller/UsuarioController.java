@@ -1,6 +1,7 @@
 package br.com.fabricadeprogramador.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,10 +25,30 @@ public class UsuarioController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-	
-		System.out.println("Chamou Get");
-	}
-	
+		resp.setContentType("text/html");//configura o response para entender que não só strings, mas html
+		String acao = req.getParameter("acao");
+		if(acao.equals("excluir")) {
+			String id = req.getParameter("id");
+			Usuario usu = new Usuario();
+			if(id != null)
+				usu.setId(Integer.parseInt(id));
+		
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+			usuarioDAO.excluir(usu);
+		
+			resp.getWriter().print("<b>Excluído com sucesso!<b>");
+			System.out.println("Excluído com sucesso");
+		}else if(acao.equals("lis")) {
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+			List<Usuario> lista = usuarioDAO.buscarTodos();
+			for(Usuario u:lista) {
+				resp.getWriter().print(u + "<br>");
+			}
+		}
+		
+		
+		}
+		
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 		throws ServletException, IOException {
 		
