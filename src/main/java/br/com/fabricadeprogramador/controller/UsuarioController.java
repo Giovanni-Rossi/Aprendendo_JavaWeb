@@ -3,6 +3,7 @@ package br.com.fabricadeprogramador.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +28,7 @@ public class UsuarioController extends HttpServlet {
 			throws ServletException, IOException {
 		resp.setContentType("text/html");//configura o response para entender que não só strings, mas html
 		String acao = req.getParameter("acao");
-		if(acao.equals("excluir")) {
+		if(acao.equals("exc")) {
 			String id = req.getParameter("id");
 			Usuario usu = new Usuario();
 			if(id != null)
@@ -38,16 +39,43 @@ public class UsuarioController extends HttpServlet {
 		
 			resp.getWriter().print("<b>Excluído com sucesso!<b>");
 			System.out.println("Excluído com sucesso");
+			resp.sendRedirect("usucontroller.do?acao=lis");
+			
 		}else if(acao.equals("lis")) {
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
 			List<Usuario> lista = usuarioDAO.buscarTodos();
-			for(Usuario u:lista) {
-				resp.getWriter().print(u + "<br>");
-			}
+			
+			req.setAttribute("lista", lista);
+			
+			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/listausu.jsp");//constroi uma instacia do objeto requestDispartcher para realizaar forager
+			dispatcher.forward(req, resp);
+		
+		}else if(acao.equals("alt")){
+			String id = req.getParameter("id");
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+			Usuario usuario = usuarioDAO.buscarPorId(Integer.parseInt(id));
+			req.setAttribute("usu", usuario);
+			
+			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/formusuario.jsp");
+			dispatcher.forward(req, resp);
+		
+		}else if(acao.equals("cad")) {
+			
+			Usuario usuario = new Usuario();
+			usuario.setId(0);
+			usuario.setNome("");
+			usuario.setLogin("");
+			usuario.setSenha("");
+			
+			req.setAttribute("usu", usuario);
+			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/formusuario.jsp");
+			dispatcher.forward(req, resp);
 		}
 		
+	
 		
-		}
+	
+	}
 		
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 		throws ServletException, IOException {

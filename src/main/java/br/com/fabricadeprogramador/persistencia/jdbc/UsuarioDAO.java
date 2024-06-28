@@ -62,7 +62,7 @@ public class UsuarioDAO {
 		}
 	}
 	public void salvar(Usuario usuario) {
-		if(usuario.getId()>0) {
+		if(usuario.getId() != 0) {
 			alterar(usuario);
 		}
 		else {

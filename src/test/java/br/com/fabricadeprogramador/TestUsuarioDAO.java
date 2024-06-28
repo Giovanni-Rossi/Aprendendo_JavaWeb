@@ -8,7 +8,8 @@ import br.com.fabricadeprogramador.persistencia.jdbc.UsuarioDAO;
 public class TestUsuarioDAO {
 	
 	public static void main(String[] args) {
-		testAutenticar();
+		 testCadastrar();
+		//testAutenticar();
 		//testBuscarTodos();
 		//testBuscarPorId();
 		//testSalvar();
