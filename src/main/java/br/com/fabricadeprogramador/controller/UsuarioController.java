@@ -92,7 +92,7 @@ public class UsuarioController extends HttpServlet {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		usuarioDAO.salvar(usu);
 		
-		resp.getWriter().print("<b>sucesso!<b>");
+		resp.sendRedirect("usucontroller.do?acao=lis");
 		
 	}
 	public void destroy() {

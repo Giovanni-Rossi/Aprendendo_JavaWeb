@@ -12,7 +12,7 @@ import br.com.fabricadeprogramador.persistencia.entidade.Usuario;
 public class UsuarioDAO {
 	private Connection con = ConexaoFactory.getConnection();
 	public void cadastrar(Usuario usu) {
-		String sql = "insert into usuario (nome, login, senha) values (?, ?, ?)";
+		String sql = "insert into usuario (nome, login, senha) values (?, ?, md5(?))";
 		
 		try {
 			PreparedStatement preparador  = con.prepareStatement(sql);
@@ -29,7 +29,7 @@ public class UsuarioDAO {
 		}
 	}
 	public void alterar(Usuario usu) {
-		String sql = "update usuario set nome=?, login=? , senha=? where id=?";
+		String sql = "update usuario set nome=?, login=? , senha=md5(?) where id=?";
 		
 		try {
 			PreparedStatement preparador  = con.prepareStatement(sql);
@@ -126,7 +126,7 @@ public class UsuarioDAO {
 	}
 	
 	public Usuario autenticar(Usuario usuConsulta) {
-		String sql = "Select * from usuario where login=? and senha=?";
+		String sql = "Select * from usuario where login=? and senha=md5(?)";
 		try(PreparedStatement preparador = con.prepareStatement(sql)){
 			preparador.setString(1, usuConsulta.getLogin());
 			preparador.setString(2, usuConsulta.getSenha());

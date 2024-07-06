@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Lista de Usuários</title>
+<script>
+	function novo(){
+		location.href='usucontroller.do?acao=cad';
+	}
+
+</script>
 <script type="text/javascript">
 function confirmaExclusao(id){
 	if (window.confirm('Tem certeza que deseja excluir?')){
@@ -15,6 +21,7 @@ function confirmaExclusao(id){
 </script>
 </head>
 <body>
+<%@include file="menu.jsp"%>
 <%
 	//JSP's são servlets gerados dinamicamente
     // Corrigindo o tipo e a conversão de tipo
@@ -30,5 +37,8 @@ function confirmaExclusao(id){
 			<td> <a href="javascript:confirmaExclusao(<%= u.getId() %>)">excluir</a> | <a href="usucontroller.do?acao=alt&id=<%=u.getId()%>"> alterar </a>  </td>
 		</tr>
 	<% } %>
+	
+	
+	<input type="button" value="Novo" onclick="javascript:novo()" >
 </body>
 </html>

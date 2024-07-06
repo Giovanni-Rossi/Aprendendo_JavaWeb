@@ -16,11 +16,10 @@
 		Nome:<input type="text" name="nome" value="<%=u.getNome()%>" />
 		Login:<input type="text" name="login" value="<%=u.getLogin()%>" />
 		Senha:<input type="text" name="senha" value="<%=u.getSenha() %>" />
-
+		
 		<input type="submit" value="Salvar">
-
 	</form>
-
+	
 </body>
 
 </html>
